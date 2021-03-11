@@ -84,7 +84,7 @@ function regist_item_transaction($db, $name, $price, $stock, $status, $image, $f
       $db->commit();
     return true;
   }
-  //ロールバック　処理
+  //ロールバック処理
   $db->rollback();
   return false;
   
@@ -129,13 +129,13 @@ function update_item_stock($db, $item_id, $stock){
     UPDATE
       items
     SET
-      stock = {$stock}
+      stock = ?
     WHERE
-      item_id = {$item_id}
+      item_id = ?
     LIMIT 1
   ";
   
-  return execute_query($db, $sql);
+  return execute_query($db, $sql, array($stock, $item_id));
 }
 
 //商品削除処理
