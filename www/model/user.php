@@ -34,12 +34,12 @@ function get_user_by_name($db, $name){
     FROM
       users
     WHERE
-      name = '{$name}'
+      name = ?
     LIMIT 1
   ";
 
   //SQL文の準備、実行、レコード取得
-  return fetch_query($db, $sql);
+  return fetch_query($db, $sql, array($name));
 }
 
 //ログイン処理
@@ -138,10 +138,10 @@ function insert_user($db, $name, $password){
   $sql = "
     INSERT INTO
       users(name, password)
-    VALUES ('{$name}', '{$password}');
+    VALUES (?, ?);
   ";
 
   //SQL文の準備から実行
-  return execute_query($db, $sql);
+  return execute_query($db, $sql, array($name, $password));
 }
 
