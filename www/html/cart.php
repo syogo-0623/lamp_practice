@@ -1,4 +1,5 @@
 <?php
+header('X-FRAME-OPTIONS: DENY');
 //定義ファイルの読み込み
 require_once '../conf/const.php';
 //関数ファイル読み込み
