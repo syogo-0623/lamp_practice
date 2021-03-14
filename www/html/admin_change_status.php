@@ -30,24 +30,26 @@ if(is_admin($user) === false){
 //ポストの取得
 $item_id = get_post('item_id');
 $changes_to = get_post('changes_to');
+$token = get_post('token');
 
-//ステータスの公開したら
-if($changes_to === 'open'){
-  //商品ステータスを更新
-  update_item_status($db, $item_id, ITEM_STATUS_OPEN);
-  //メッセージ
-  set_message('ステータスを変更しました。');
-
-  //商品ステータスを非公開にしたら
-}else if($changes_to === 'close'){
-  update_item_status($db, $item_id, ITEM_STATUS_CLOSE);
-  //メッセージ
-  set_message('ステータスを変更しました。');
-
-  //その他
-}else {
-  set_error('不正なリクエストです。');
-}
+//トークンチェック
+if(is_valid_csrf_token($token) === true) {
+  //ステータスの公開したら
+  if($changes_to === 'open'){
+    //商品ステータスを更新
+    update_item_status($db, $item_id, ITEM_STATUS_OPEN);
+    //メッセージ
+    set_message('ステータスを変更しました。');
+    //商品ステータスを非公開にしたら
+    } else if($changes_to === 'close'){
+      update_item_status($db, $item_id, ITEM_STATUS_CLOSE);
+      //メッセージ
+      set_message('ステータスを変更しました。');
+      }
+      //その他
+  } else {
+    set_error('不正なリクエストです。');
+  }
 
 //管理者URLへリダイレクト
 redirect_to(ADMIN_URL);

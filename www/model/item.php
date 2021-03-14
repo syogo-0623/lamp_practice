@@ -105,7 +105,7 @@ function insert_item($db, $name, $price, $stock, $filename, $status){
     VALUES(?, ?, ?, ?, ?);
   ";
 
-  return execute_query($db, $sql, array($name, $price, $stock, $filename, $status));
+  return execute_query($db, $sql, array($name, $price, $stock, $filename, $status_value));
 }
 
 //ステータスの更新処理
@@ -120,7 +120,7 @@ function update_item_status($db, $item_id, $status){
     LIMIT 1
   ";
   
-  return execute_query($db, $sql, array($item_id, $status));
+  return execute_query($db, $sql, array($status, $item_id));
 }
 
 //在庫更新処理

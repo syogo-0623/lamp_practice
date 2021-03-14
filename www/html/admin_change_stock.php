@@ -30,13 +30,19 @@ if(is_admin($user) === false){
 //ポストの取得
 $item_id = get_post('item_id');
 $stock = get_post('stock');
+$token = get_post('token');
 
-//在庫情報の更新
+//トークンのチェック
+if(is_valid_csrf_token($token) === true) {
+  //在庫情報の更新
 if(update_item_stock($db, $item_id, $stock)){
   set_message('在庫数を変更しました。');
   //更新されなければ
 } else {
   set_error('在庫数の変更に失敗しました。');
+}
+} else {
+  set_error('不正なリクエストです。');
 }
 
 //管理者ページへ

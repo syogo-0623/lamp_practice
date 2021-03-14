@@ -32,17 +32,23 @@ $name = get_post('name');
 $price = get_post('price');
 $status = get_post('status');
 $stock = get_post('stock');
+$token = get_post('token');
 
 //ゲットの取得
 $image = get_file('image');
 
-//商品情報の追加登録
-if(regist_item($db, $name, $price, $stock, $status, $image)){
-  //メッセージ
-  set_message('商品を登録しました。');
-}else {
-  //メッセージ
-  set_error('商品の登録に失敗しました。');
+//トークンのチェック
+if (is_valid_csrf_token($token) === true) {
+  //商品情報の追加登録
+  if(regist_item($db, $name, $price, $stock, $status, $image)){
+    //メッセージ
+    set_message('商品を登録しました。');
+  }else {
+    //メッセージ
+    set_error('商品の登録に失敗しました。');
+    }
+} else {
+  set_erorr('不正なリクエストです。');
 }
 
 //管理者ページへ

@@ -22,6 +22,9 @@ $db = get_db_connect();
 //ログインされたユーザー接続
 $user = get_login_user($db);
 
+//トークン生成
+$token = get_csrf_token();
+
 //管理者でなかったらログインページへ
 if(is_admin($user) === false){
   redirect_to(LOGIN_URL);

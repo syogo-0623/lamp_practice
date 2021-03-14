@@ -29,16 +29,23 @@ if(is_admin($user) === false){
 
 //商品IDポストの取得
 $item_id = get_post('item_id');
+$token = get_post('token');
 
-//商品情報の削除
-if(destroy_item($db, $item_id) === true){
-  //メッセージ
-  set_message('商品を削除しました。');
-  //削除できなければ
+//トークンのチェック
+if (is_valid_csrf_token($token) === true) {
+  //商品情報の削除
+  if(destroy_item($db, $item_id) === true){
+    //メッセージ
+    set_message('商品を削除しました。');
+    //削除できなければ
+  } else {
+    //メッセージ
+    set_error('商品削除に失敗しました。');
+    }
 } else {
-  //メッセージ
-  set_error('商品削除に失敗しました。');
+  set_error('不正なリクエストです。');
 }
+
 
 
 //管理者ページへ
