@@ -23,12 +23,20 @@ $db = get_db_connect();
 $user = get_login_user($db);
 //ユーザーのカート情報の取得
 $carts = get_user_carts($db, $user['user_id']);
-//購入カートがなかったら
-if(purchase_carts($db, $carts) === false){
+//トークンの取得
+$token = get_post('token');
+
+//トークンのチェック
+if (is_valid_csrf_token($token) === true) {
+  //購入カートがなかったら
+  if(purchase_carts($db, $carts) === false){
   set_error('商品が購入できませんでした。');
   //カートページへ
   redirect_to(CART_URL);
-} 
+  } 
+} else {
+  set_error ('不正な操作が行われました。');
+}
 
 //トータル金額の定義
 $total_price = sum_carts($carts);

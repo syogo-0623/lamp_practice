@@ -1,4 +1,5 @@
 <?php
+header('X-FRAME-OPTIONS: DENY');
 //定義ファイルの読み込み
 require_once '../conf/const.php';
 //関数ファイルの読み込み
@@ -21,6 +22,9 @@ $db = get_db_connect();
 
 //ログインされたユーザー接続
 $user = get_login_user($db);
+
+//トークン生成
+$token = get_csrf_token();
 
 //管理者でなかったらログインページへ
 if(is_admin($user) === false){
