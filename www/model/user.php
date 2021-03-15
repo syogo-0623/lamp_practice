@@ -70,6 +70,7 @@ function regist_user($db, $name, $password, $password_confirmation) {
   if( is_valid_user($name, $password, $password_confirmation) === false){
     return false;
   }
+  $hash = password_hash($password, PASSWORD_DEFAULT);
   //有効であればユーザー追加
   return insert_user($db, $name, $password);
 }
