@@ -118,18 +118,40 @@ function purchase_carts($db, $carts){
   if(validate_cart_purchase($carts) === false){
     return false;
   }
-  //購入後の在庫更新処理
-  foreach($carts as $cart){
-    if(update_item_stock(
-        $db, 
-        $cart['item_id'], 
-        $cart['stock'] - $cart['amount']
-      ) === false){
-      set_error($cart['name'] . 'の購入に失敗しました。');
+  //購入した後にカートの中身の削除と在庫更新処理を購入履歴・明細に挿入
+  $db->beginTransaction();
+  try {
+    insert_history($db, $carts[0]['user_id']);
+    $history_id = $db->lastInsertId();
+
+    //購入後の購入明細処理
+    foreach($carts as $cart){
+      insert_datail(
+        $db,
+        $history_id,
+        $cart['item_id'],
+        $cart['price'],
+        $cart['name'],
+        $cart['amount']
+      );
+      //購入後の在庫更新処理
+      if(update_item_stock(
+          $db, 
+          $cart['item_id'], 
+          $cart['stock'] - $cart['amount']
+        ) === false){
+        set_error($cart['name'] . 'の購入に失敗しました。');
+      }
     }
+      //ユーザーのカート削除処理
+      delete_user_carts($db, $carts[0]['user_id']);
+      //コミット
+      $db->commit();
+  } catch(PDOException $e) {
+    //ロールバック
+    $db->rollback();
+    throw $e;
   }
-  //ユーザーのカート削除処理
-  delete_user_carts($db, $carts[0]['user_id']);
 }
 
 //ユーザーのカート削除処理
@@ -173,3 +195,30 @@ function validate_cart_purchase($carts){
   return true;
 }
 
+//購入履歴へ追加
+function insert_history($db, $user_id) {
+  $sql = "
+    INSERT INTO
+      history (
+        user_id
+      )
+    VALUES(?)
+  ";
+  return execute_query($db, $sql, array($user_id));
+}
+
+//購入明細に追加
+function insert_datail($db, $history_id, $name, $item_id, $amount, $price) {
+  $sql = "
+    INSERT INTO
+      datail(
+        history_id,
+        name,
+        item_id,
+        amount,
+        price
+      )
+    VALUES(?, ?, ?, ?, ?)
+  ";
+  return execute_query($db, $sql, array($history_id, $name, $item_id, $amount, $price));
+}
