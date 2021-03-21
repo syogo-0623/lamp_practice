@@ -126,13 +126,13 @@ function purchase_carts($db, $carts){
 
     //購入後の購入明細処理
     foreach($carts as $cart){
-      insert_datail(
+      insert_detail(
         $db,
         $history_id,
-        $cart['item_id'],
-        $cart['price'],
         $cart['name'],
-        $cart['amount']
+        $cart['item_id'],
+        $cart['amount'],
+        $cart['price']
       );
       //購入後の在庫更新処理
       if(update_item_stock(
@@ -200,18 +200,19 @@ function insert_history($db, $user_id) {
   $sql = "
     INSERT INTO
       history (
-        user_id
+        user_id,
+        create_datetime
       )
-    VALUES(?)
+    VALUES(?, NOW())
   ";
   return execute_query($db, $sql, array($user_id));
 }
 
 //購入明細に追加
-function insert_datail($db, $history_id, $name, $item_id, $amount, $price) {
+function insert_detail($db, $history_id, $name, $item_id, $amount, $price) {
   $sql = "
     INSERT INTO
-      datail(
+      detail(
         history_id,
         name,
         item_id,

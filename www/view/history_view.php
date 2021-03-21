@@ -12,7 +12,7 @@
         <?php include VIEW_PATH . 'templates/messages.php'; ?>
 
         <!--- 購入履歴 -->
-        <?php if(!empty($history_id)) { ?>
+        <?php if(!empty($histories)) { ?>
         <table>
                 <thead>
                     <tr>
@@ -23,7 +23,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                <?php foreach($history_id as $history) { ?>
+                <?php foreach($histories as $history) { ?>
                 <tr>
                     <td><?php print $history['history_id']; ?></td>
                     <td><?php print $history['create_datetime']; ?></td>

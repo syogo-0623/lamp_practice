@@ -22,13 +22,13 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach($history_id as $history) { ?>
+                <?php foreach($histories as $history) { ?>
                     <tr>
                         <td><?php print $history['history_id']; ?></td>
                         <td><?php print $history['create_datetime']; ?></td>
                         <td><?php print $history['total']; ?></td>
                         <td>
-                            <form method="post action="detail.php">
+                            <form method="post" action="detail.php">
                                 <input type="submit" value="購入明細表示">
                                 <input type="hidden" name="history_id" value="<?php print $history['history_id']; ?>">
                             </form>
@@ -49,10 +49,10 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach($datail as $datail) { ?>
+                <?php foreach($details as $detail) { ?>
                     <tr>
                         <td><?php print $detail['name']; ?></td>
-                        <td><?php print $datail['price']; ?></td>
+                        <td><?php print $detail['price']; ?></td>
                         <td><?php print $detail['amount']; ?></td>
                         <td><?php print $detail['subtotal']; ?></td>
                     </tr>
