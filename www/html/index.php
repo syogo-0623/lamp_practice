@@ -30,5 +30,8 @@ $items = get_open_items($db);
 //トークンのチェック
 $token = get_csrf_token();
 
+//全ユーザーの購入数のランキングを取得
+$ranking = get_ranking($db);
+
 // ビューの読み込み
 include_once VIEW_PATH . 'index_view.php';

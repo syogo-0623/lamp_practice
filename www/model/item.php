@@ -240,3 +240,27 @@ function is_valid_item_status($status){
   }
   return $is_valid;
 }
+
+//全ユーザーの購入数の上位３つを取得する関数
+function get_ranking($db) {
+  $sql = "
+    SELECT
+      detail.item_id,
+      SUM(detail.amount) AS total,
+      items.name,
+      items.image
+    FROM
+      detail
+    INNER JOIN
+      items
+    ON
+      detail.item_id = items.item_id
+    GROUP BY
+      detail.item_id
+    ORDER BY
+      total DESC
+    LIMIT
+      3
+  ";
+  return fetch_all_query($db, $sql);
+}
