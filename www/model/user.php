@@ -47,7 +47,7 @@ function login_as($db, $name, $password){
   //ユーザー名の取得
   $user = get_user_by_name($db, $name);
   //ユーザー名に誤りがある又はパスワードが異なる場合、false
-  if($user === false || $user['password'] !== $password){
+  if($user === false || password_verify($password, $user['password']) === false){
     return false;
   }
   //falseでなかったらユーザーID取得
@@ -70,8 +70,10 @@ function regist_user($db, $name, $password, $password_confirmation) {
   if( is_valid_user($name, $password, $password_confirmation) === false){
     return false;
   }
+  $hash = password_hash($password, PASSWORD_DEFAULT);
+  //var_dump($hash);
   //有効であればユーザー追加
-  return insert_user($db, $name, $password);
+  return insert_user($db, $name, $hash);
 }
 
 //
