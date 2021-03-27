@@ -44,5 +44,23 @@
     </div>
   </div>
   
+  <h1 class="popular_ranking">人気ランキング</h1>
+  <div class="rankings">
+    <div class="ranking">
+      <?php print '1位' . $ranking[0]['name']; ?>
+      <p><img class="ranking-img" style="background-image:url(<?php print(IMAGE_PATH . $ranking[0]['image']); ?>)"></p>
+      <p><?php print '売上数' . $ranking[0]['total'] . '個'; ?></p>
+    </div>
+    <div class="ranking">
+      <?php print '2位' . $ranking[1]['name']; ?>
+      <p><img class="ranking-img" style="background-image:url(<?php print(IMAGE_PATH . $ranking[1]['image']); ?>)"></p>
+      <p><?php print '売上数' . $ranking[1]['total'] . '個'; ?></p>
+    </div>
+    <div class="ranking">
+      <?php print '3位' . $ranking[2]['name']; ?>
+      <p><img class="ranking-img" style="background-image:url(<?php print(IMAGE_PATH . $ranking[2]['image']); ?>)"></p>
+      <p><?php print '売上数' . $ranking[2]['total'] . '個'; ?></p>
+    </div>
+  </div>
 </body>
 </html>
